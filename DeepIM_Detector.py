@@ -9,23 +9,23 @@ import tensorflow as tf
 from scipy.special import binom
 #from keras import backend as K
 
-N = 4 # number of sub-carriers
-K = 1 # number of active sub-carriers
-M = 4 # M-ary modulation order
+N = 4 # number of sub-carriers          #总的子载波
+K = 1 # number of active sub-carriers   #活跃子载波
+M = 4 # M-ary modulation order          
 
-SNRdb = 10 # Training SNR
+SNRdb = 10 # Training SNR               #训练的信噪比
 
-traing_epochs = 1001
-l_rate = 0.001 
-total_batch = 20 # number of batches per epoch
+traing_epochs = 1001                    #训练的迭代次数
+l_rate = 0.001                          #学习率
+total_batch = 20                        # number of batches per epoch
 batch_size = 1000
 
-n_hidden_1 = 32 # smaller for Tanh, larger for ReLu
+n_hidden_1 = 32                         # smaller for Tanh, larger for ReLu
 n_input = 3*N
 
 m = int(np.log2(M))
 c = int(np.log2(binom(N,K)))
-q = K*m + c # number of bits per OFDM-IM symbol
+q = K*m + c                             # number of bits per OFDM-IM symbol，每一个OFDM-IM符号的bit数量
 Q = 2**q
 n_output = q 
 
@@ -37,7 +37,7 @@ qam_factor = (2/3)*(M-1)
 bits = np.random.binomial(n=1, p=0.5, size = (q,))
 a = 1/np.sqrt(2)
 
-# M-ary modulations
+                                        # M-ary modulations
 if M==4:
     QAM = np.array([1+1j, 1-1j, -1+1j, -1-1j], dtype=complex) # gray mapping
 elif M==8:
@@ -54,7 +54,7 @@ else:
 
 power = np.sqrt(N/K/qam_factor) # power allocation factor
 
-# index patterns for N=4 and K=1,2,3 only
+                                          # index patterns for N=4 and K=1,2,3 only
 if K==1:
     idx = np.array([[0],[1],[2],[3]])
 elif K==2:
