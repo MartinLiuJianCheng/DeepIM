@@ -37,7 +37,7 @@ qam_factor = (2/3)*(M-1)
 bits = np.random.binomial(n=1, p=0.5, size = (q,))
 a = 1/np.sqrt(2)
 
-                                        # M-ary modulations
+                                        # M-ary modulations   QAM调制
 if M==4:
     QAM = np.array([1+1j, 1-1j, -1+1j, -1-1j], dtype=complex) # gray mapping
 elif M==8:
@@ -62,6 +62,8 @@ elif K==2:
 else:
     idx = np.array([[0,1,2],[1,2,3],[0,2,3],[0,1,3]]) 
     
+#######################################################################################################################################
+                                                  # 论文中的y，接收信号
 def OFDM_IM_received(bits, SNRdb):   
     bit_id = bits[0:c:1]
     id_de = bit_id.dot(2**np.arange(bit_id.size)[::-1])
@@ -96,7 +98,9 @@ def OFDM_IM_received(bits, SNRdb):
     Y = np.concatenate((y_con,y_m))
 
     return Y 
-
+  
+#######################################################################################################################################
+                                                      # 
 def OFDM_IM_received_test(bits, SNRdb):
     bit_id = bits[0:c:1]
     id_de = bit_id.dot(2 ** np.arange(bit_id.size)[::-1])
@@ -136,6 +140,9 @@ X = tf.placeholder("float", [None, n_input])
 Y = tf.placeholder("float", [None, n_output])
 initializer = tf.contrib.layers.xavier_initializer()
 
+#######################################################################################################################################
+                                                  # 神经网络的参数设置
+  
 def encoder(x):
     weights = {                    
         'encoder_h1': tf.Variable(initializer([n_input, n_hidden_1])),
@@ -157,6 +164,10 @@ cost = tf.reduce_mean(tf.pow(y_true - y_pred, 2))
 learning_rate = tf.placeholder(tf.float32, shape=[])
 optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
 init = tf.global_variables_initializer()
+
+
+#######################################################################################################################################
+
 
 def frange(x, y, jump):
   while x < y:
@@ -213,7 +224,9 @@ with tf.Session() as sess:
         ber[n]  = mean_error_rate.eval({X:batch_x}) # eval
         print("SNR=", EbNodB_range[n], "BER:", ber[n])
         
-        
+#######################################################################################################################################
+                                            # 作图区域
+
     import matplotlib.pyplot as plt
     plt.plot(EbNodB_range, ber, 'bo',label='DL IM detection')
     #plt.plot(list(EbNodB_range), ber_theory, 'ro-',label='BPSK BER')
