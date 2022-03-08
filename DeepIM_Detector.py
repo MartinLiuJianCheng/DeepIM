@@ -235,5 +235,5 @@ with tf.Session() as sess:
     plt.ylabel('BER')
     plt.grid()
     plt.legend(loc='upper right',ncol = 1)
-    #plt.savefig('DL_Detection_IM_BER_matplotlib')
+    #plt.savefig('DL_Detection_IM_BER_matplotlib') #
     plt.show()
