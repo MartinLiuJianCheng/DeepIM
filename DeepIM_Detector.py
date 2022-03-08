@@ -89,7 +89,7 @@ def OFDM_IM_received(bits, SNRdb):
     e = np.sqrt(eps/2)*(np.random.randn(*tx_sym.shape)+1j*np.random.randn(*tx_sym.shape))
     h1 = h + e
     
-    y = h1*tx_sym + noise
+    y = h1*tx_sym + noise      # 加性噪声
     y_bar = y/h
     y_con = np.concatenate((np.real(y_bar),np.imag(y_bar)))
     y_m = np.absolute(y)
